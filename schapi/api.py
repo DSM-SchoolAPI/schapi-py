@@ -62,6 +62,12 @@ class SchoolAPI:
 
         return menu_dict
 
+    def _dict_to_menu_list(self, menu_dict, keyword):
+        try:
+            return menu_dict.pop(keyword)
+        except KeyError:
+            pass
+
     @lru_cache()
     def get_monthly_menus(self, year, month):
         """
@@ -86,21 +92,9 @@ class SchoolAPI:
 
             if len(data) > 1 and data != '자료가 없습니다':
                 menu_dict = self._get_menu_dict(data)
-
-                try:
-                    meal.breakfast = menu_dict.pop('조식')
-                except KeyError:
-                    pass
-
-                try:
-                    meal.lunch = menu_dict.pop('중식')
-                except KeyError:
-                    pass
-
-                try:
-                    meal.dinner = menu_dict.pop('석식')
-                except KeyError:
-                    pass
+                meal.breakfast = self._dict_to_menu_list(menu_dict, '조식')
+                meal.lunch = self._dict_to_menu_list(menu_dict, '중식')
+                meal.dinner = self._dict_to_menu_list(menu_dict, '석식')
 
             menus.append(meal)
 
