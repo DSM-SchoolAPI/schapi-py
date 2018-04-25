@@ -30,6 +30,18 @@ class TestMeal(APITestBase):
             ['기장밥', '청경채된장국', '영양돼지갈비찜', '도토리묵상추무침', '배추김치', '제주감귤쥬스']
         )
 
+    def test_monthly_menus_memoization(self):
+        before = time.time()
+        self.api.get_monthly_menus(2018, 4)
+        un_memoized = time.time() - before
+
+        before = time.time()
+        self.api.get_monthly_menus(2018, 4)
+        memoized = time.time() - before
+
+        self.assertLess(memoized, un_memoized * 0.0001)
+        # 10000배 이상 빠름
+
 
 if __name__ == '__main__':
     main()
