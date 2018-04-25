@@ -1,4 +1,5 @@
 from enum import Enum
+from functools import lru_cache
 import ssl
 
 from urllib.request import urlopen
@@ -61,6 +62,7 @@ class SchoolAPI:
 
         return menu_dict
 
+    @lru_cache()
     def get_monthly_menus(self, year, month):
         """
         Inquire monthly school meals

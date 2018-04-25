@@ -1,1 +1,1 @@
-from .api import SchoolAPI
+from .api import SchoolAPI, Region
