@@ -1,4 +1,5 @@
 from enum import Enum
+import ssl
 
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
@@ -28,4 +29,12 @@ class Region(Enum):
 
 
 class SchoolAPI:
-    pass
+    def __init__(self, region, school_code):
+        """
+        Args:
+            region (Region)
+            school_code (str)
+        """
+        self.region = region.value
+        self.school_code = school_code
+
