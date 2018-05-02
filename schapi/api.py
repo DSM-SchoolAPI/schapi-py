@@ -1,12 +1,14 @@
 from enum import Enum
 from functools import lru_cache
+import asyncio
 import ssl
 
+import aiohttp
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import re
 
-from .datastructure import Meal
+from schapi.datastructure import Meal
 
 _url = 'http://{0}/sts_sci_md00_001.do?schulCode={1}&schulCrseScCode=4&schulKndScScore=04&schYm={2}{3:0>2}'
 
@@ -46,6 +48,9 @@ class SchoolAPI:
 
         return context
 
+    def _get_formatted_url(self, year, month):
+        return _url.format(self.region, self.school_code, year, month)
+
     def _get_menu_dict(self, data):
         daily_menus = re.findall('[가-힇]+\(\w+\)|[가-힇]+', data)
 
@@ -68,24 +73,8 @@ class SchoolAPI:
         except KeyError:
             pass
 
-    @lru_cache()
-    def get_monthly_menus(self, year, month):
-        """
-        Inquire monthly school meals
-
-        Args:
-            year (int) : Year to inquire
-            month (int) : Month to inquire
-
-        Returns:
-            list: Monthly meal list
-        """
+    def _get_menus_from_soup(self, soup):
         menus = [Meal()]
-
-        context = self._get_ssl_context()
-        resp = urlopen(_url.format(self.region, self.school_code, year, month), context=context)
-
-        soup = BeautifulSoup(resp, 'html.parser')
 
         for data in [td.text for td in soup.find(class_='tbl_type3 tbl_calendar').find_all('td') if td.text != ' ']:
             meal = Meal()
@@ -99,6 +88,32 @@ class SchoolAPI:
             menus.append(meal)
 
         return menus
+
+    @lru_cache()
+    def get_monthly_menus(self, year, month):
+        """
+        Inquire monthly school meals
+
+        Args:
+            year (int) : Year to inquire
+            month (int) : Month to inquire
+
+        Returns:
+            list: Monthly meal list
+        """
+        resp = urlopen(self._get_formatted_url(year, month), context=self._get_ssl_context())
+        soup = BeautifulSoup(resp, 'html.parser')
+
+        return self._get_menus_from_soup(soup)
+
+    @lru_cache()
+    async def get_monthly_menus_async(self, year, month):
+        async with aiohttp.ClientSession() as session:
+            async with session.get(self._get_formatted_url(year, month), ssl_context=self._get_ssl_context()) as res:
+                resp = await res.text()
+                soup = BeautifulSoup(resp, 'html.parser')
+
+                return self._get_menus_from_soup(soup)
 
     def tabulate(self, year):
         for month in range(1, 13):

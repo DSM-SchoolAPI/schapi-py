@@ -4,8 +4,5 @@
 # schapi/api.py: 6
 beautifulsoup4 == 4.6.0
 
-# test.py: 4
-schapi == 0.3.4
-
 # setup.py: 1
 setuptools == 28.8.0
