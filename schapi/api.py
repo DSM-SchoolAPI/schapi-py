@@ -99,3 +99,7 @@ class SchoolAPI:
             menus.append(meal)
 
         return menus
+
+    def tabulate(self, year):
+        for month in range(1, 13):
+            self.get_monthly_menus(year, month)
