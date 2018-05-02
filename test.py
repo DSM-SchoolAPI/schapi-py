@@ -1,7 +1,7 @@
 from unittest import TestCase as TC, main
 import time
 
-from schapi import SchoolAPI, Region
+from .schapi import SchoolAPI, Region
 
 
 class APITestBase(TC):

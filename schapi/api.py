@@ -1,6 +1,5 @@
 from enum import Enum
 from functools import lru_cache
-import asyncio
 import ssl
 
 import aiohttp
@@ -8,7 +7,7 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import re
 
-from schapi.datastructure import Meal
+from .datastructure import Meal
 
 _url = 'http://{0}/sts_sci_md00_001.do?schulCode={1}&schulCrseScCode=4&schulKndScScore=04&schYm={2}{3:0>2}'
 

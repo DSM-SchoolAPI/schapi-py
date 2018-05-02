@@ -14,5 +14,5 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules'
     ],
     packages=['schapi'],
-    install_requires=['bs4']
+    install_requires=['bs4', 'aiohttp']
 )
