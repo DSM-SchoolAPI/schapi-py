@@ -1,6 +1,5 @@
 from enum import Enum
 from functools import lru_cache
-import ssl
 
 import aiohttp
 from urllib.request import urlopen
@@ -9,7 +8,7 @@ import re
 
 from .datastructure import Meal
 
-_url = 'http://{}/sts_sci_md00_001.do?schulCode={}&schulCrseScCode={}&schulKndScScore=0{}&schYm={}{:0>2}'
+_url = 'https://{}/sts_sci_md00_001.do?schulCode={}&schulCrseScCode={}&schulKndScScore=0{}&schYm={}{:0>2}'
 
 
 class Region(Enum):
@@ -50,16 +49,11 @@ class SchoolAPI:
         self.school_code = school_code
         self.type = type
 
-    def _get_ssl_context(self):
-        context = ssl._create_unverified_context()
-
-        return context
-
     def _get_formatted_url(self, year, month):
         return _url.format(self.region.value, self.school_code, self.type.value, self.type.value, year, month)
 
     def _get_menu_dict(self, data):
-        daily_menus = re.findall('[가-힇]+\(\w+\)|[가-힇]+', data)
+        daily_menus = re.findall('[가-힇]+\(\[가-힇]+\)|[가-힇]+', data)
 
         menu_dict = dict()
         timing = [menu for menu in daily_menus if re.match('[조중석]식', menu)]
@@ -108,7 +102,7 @@ class SchoolAPI:
         Returns:
             list: Monthly meal list
         """
-        resp = urlopen(self._get_formatted_url(year, month), context=self._get_ssl_context())
+        resp = urlopen(self._get_formatted_url(year, month))
         soup = BeautifulSoup(resp, 'html.parser')
 
         return self._get_menus_from_soup(soup)
@@ -116,7 +110,7 @@ class SchoolAPI:
     @lru_cache()
     async def get_monthly_menus_async(self, year, month):
         async with aiohttp.ClientSession() as session:
-            async with session.get(self._get_formatted_url(year, month), ssl_context=self._get_ssl_context()) as res:
+            async with session.get(self._get_formatted_url(year, month)) as res:
                 resp = await res.text()
                 soup = BeautifulSoup(resp, 'html.parser')
 
