@@ -46,9 +46,9 @@ class SchoolAPI:
             region (Region)
             school_code (str)
         """
-        self.region = region.value
+        self.region = region
         self.school_code = school_code
-        self.type = type.value
+        self.type = type
 
     def _get_ssl_context(self):
         context = ssl._create_unverified_context()
@@ -56,7 +56,7 @@ class SchoolAPI:
         return context
 
     def _get_formatted_url(self, year, month):
-        return _url.format(self.region, self.school_code, self.type, self.type, year, month)
+        return _url.format(self.region.value, self.school_code, self.type.value, self.type.value, year, month)
 
     def _get_menu_dict(self, data):
         daily_menus = re.findall('[가-힇]+\(\w+\)|[가-힇]+', data)
