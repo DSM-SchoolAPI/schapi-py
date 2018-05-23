@@ -9,7 +9,7 @@ import re
 
 from .datastructure import Meal
 
-_url = 'http://{0}/sts_sci_md00_001.do?schulCode={1}&schulCrseScCode=4&schulKndScScore=04&schYm={2}{3:0>2}'
+_url = 'http://{}/sts_sci_md00_001.do?schulCode={}&schulCrseScCode={}&schulKndScScore=0{}&schYm={}{:0>2}'
 
 
 class Region(Enum):
@@ -32,8 +32,15 @@ class Region(Enum):
     JEJU = 'stu.jje.go.kr'
 
 
+class Type(Enum):
+    KINDERGARTEN = 1
+    ELEMENTARY = 2
+    MIDDLE = 3
+    HIGH = 4
+
+
 class SchoolAPI:
-    def __init__(self, region, school_code):
+    def __init__(self, region, school_code, type=Type.HIGH):
         """
         Args:
             region (Region)
@@ -41,6 +48,7 @@ class SchoolAPI:
         """
         self.region = region.value
         self.school_code = school_code
+        self.type = type.value
 
     def _get_ssl_context(self):
         context = ssl._create_unverified_context()
@@ -48,7 +56,7 @@ class SchoolAPI:
         return context
 
     def _get_formatted_url(self, year, month):
-        return _url.format(self.region, self.school_code, year, month)
+        return _url.format(self.region, self.school_code, self.type, self.type, year, month)
 
     def _get_menu_dict(self, data):
         daily_menus = re.findall('[가-힇]+\(\w+\)|[가-힇]+', data)
