@@ -1,12 +1,12 @@
 from unittest import TestCase as TC, main
 import time
 
-from schapi import SchoolAPI, Region
+from schapi import SchoolAPI
 
 
 class APITestBase(TC):
     def setUp(self):
-        self.api = SchoolAPI(Region.DAEJEON, 'G100000170')
+        self.api = SchoolAPI(SchoolAPI.Region.DAEJEON, 'G100000170')
         
         super(APITestBase, self).setUp()
 

@@ -10,9 +10,9 @@ $ pip install schapi
 ## Guide
 아래는 **2018년 4월 3일 대덕소프트웨어마이스터고등학교 조식**을 출력합니다.
 ```
-from schapi import Region, SchoolAPI
+from schapi import SchoolAPI
 
-api = SchoolAPI(Region.DAEJEON, 'G100000170')
+api = SchoolAPI(SchoolAPI.Region.DAEJEON, 'G100000170')
 
 meals = api.get_monthly_menus(2018, 4)
 
@@ -23,7 +23,7 @@ print(meals[3].breakfast)
 학교 타입의 기본값은 고등학교로 설정되어 있고, 다른 타입으로 설정하려면 SchoolAPI의 세 번째 파라미터로 Enum 클래스인 Type의 필드 중 하나를 전달하면 됩니다.
 
 ```
-from schapi import Region, SchoolAPI, Type
+from schapi import SchoolAPI
 
-api = SchoolAPI(Region.***, '***', Type.KINDERGARTEN)
+api = SchoolAPI(SchoolAPI.Region.***, '***', SchoolAPI.Type.KINDERGARTEN)
 ```
