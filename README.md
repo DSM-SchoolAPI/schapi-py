@@ -2,6 +2,11 @@
 ## Build Status
 [![CircleCI](https://circleci.com/gh/DSM-SchoolAPI/schapi-py.svg?style=svg)](https://circleci.com/gh/DSM-SchoolAPI/schapi-py)
 
+## 설치
+```
+$ pip install schapi
+```
+
 ## Guide
 아래는 **2018년 4월 3일 대덕소프트웨어마이스터고등학교 조식**을 출력합니다.
 ```
