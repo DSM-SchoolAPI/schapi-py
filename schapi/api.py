@@ -52,7 +52,13 @@ class SchoolAPI:
 
     def _get_menu_dict(self, data):
         # daily_menus = re.findall('[가-힇]+\(\[가-힇]+\)|[가-힇]+', data)
-        daily_menus = re.findall('\[?([가-힣]+(?:\([가-힣]*\))*)(?:\*|[0-9]|\.)*\]?', data)
+        daily_menus = re.findall('\[?(\/?[가-힣]+(?:\([가-힣]*\))*)(?:\*|[0-9]|\.)*\]?', data)
+
+
+        for i, value in enumerate(daily_menus):
+            if value[0] == '/':
+                daily_menus[i-1] += value
+                del daily_menus[i]
 
         menu_dict = dict()
         timing = [menu for menu in daily_menus if re.match('[조중석]식', menu)]

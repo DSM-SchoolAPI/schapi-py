@@ -22,12 +22,12 @@ class TestMeal(APITestBase):
 
         self.assertListEqual(
             meals[3].breakfast,
-            ['시리얼(혼합)', '우유', '어린잎채소샐러드', '흑임자드레싱', '치킨너겟', '소스', '미니크로와상']
+            ['시리얼(혼합)', '우유', '어린잎채소샐러드/흑임자드레싱', '치킨너겟/소스', '미니크로와상']
         )
 
         self.assertListEqual(
             meals[3].dinner,
-            ['낙지덮밥', '미소국', '층층이등심돈까스', '소스', '콘야채샐러드', '파인애플', '배추김치']
+            ['낙지덮밥', '미소국', '층층이등심돈까스/소스', '콘야채샐러드', '파인애플', '배추김치']
         )
 
     def test_monthly_menus_memoization(self):
