@@ -51,7 +51,8 @@ class SchoolAPI:
         return _url.format(self.region.value, self.school_code, self.type.value, self.type.value, year, month)
 
     def _get_menu_dict(self, data):
-        daily_menus = re.findall('[가-힇]+\(\[가-힇]+\)|[가-힇]+', data)
+        # daily_menus = re.findall('[가-힇]+\(\[가-힇]+\)|[가-힇]+', data)
+        daily_menus = re.findall('\[?([가-힣]+(?:\([가-힣]*\))*)(?:\*|[0-9]|\.)*\]?', data)
 
         menu_dict = dict()
         timing = [menu for menu in daily_menus if re.match('[조중석]식', menu)]

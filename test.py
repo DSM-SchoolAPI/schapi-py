@@ -13,21 +13,21 @@ class APITestBase(TC):
 
 class TestMeal(APITestBase):
     def test_monthly_menus(self):
-        meals = self.api.get_monthly_menus(2018, 4)
+        meals = self.api.get_monthly_menus(2018, 10)
 
         self.assertListEqual(
-            meals[3].breakfast,
-            ['기장밥', '어묵국', '비엔나푸실리볶음', '메추리알떡조림', '포도맛요거트', '배추김치']
+            meals[1].breakfast,
+            ['흰밥(쌀밥)', '소고기미역국', '떡갈비몽떡잠발라소스볶음', '야채계란말이', '사케이유산균요구르트', '깍두기']
         )
 
         self.assertListEqual(
-            meals[3].lunch,
-            ['기장밥', '순두부찌개', '닭봉데리야끼오븐구이', '실채도라지초무침', '견과류또띠아칩', '석박지']
+            meals[3].breakfast,
+            ['시리얼(혼합)', '우유', '어린잎채소샐러드', '흑임자드레싱', '치킨너겟', '소스', '미니크로와상']
         )
 
         self.assertListEqual(
             meals[3].dinner,
-            ['기장밥', '청경채된장국', '영양돼지갈비찜', '도토리묵상추무침', '배추김치', '제주감귤쥬스']
+            ['낙지덮밥', '미소국', '층층이등심돈까스', '소스', '콘야채샐러드', '파인애플', '배추김치']
         )
 
     def test_monthly_menus_memoization(self):
