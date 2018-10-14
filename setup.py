@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='schapi',
-    version='1.1',
+    version='1.2',
     url='https://github.com/DSM-SchoolAPI/schapi-py',
     license='Apache License 2.0',
     author='PlanB',
